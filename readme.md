@@ -2,12 +2,12 @@
 
 The LGF Document System is a custom document management system designed for FiveM. It allows players to manage, issue, and view various types of licenses, such as ID cards, driving licenses, weapon licenses, and boat licenses. This system integrates with `ox_inventory` and provides job-specific access to certain documents.
 
-<code>
+
 <img title="Boat Card" src="docs/boat_card.png" alt="Boat Card">
 <img title="Drive Card" src="docs/drive_card.png" alt="Drive Card">
 <img title="ID Card" src="docs/id_card.png" alt="ID Card">
 <img title="Weapon Card" src="docs/weapon_card.png" alt="Weapon Card">
-</code>
+
 
 ## Features
 
