@@ -5,7 +5,6 @@ The LGF Document System is a custom document management system designed for Five
 
 <img title="Boat Card" src="docs/boat_card.png" alt="Boat Card">
 <img title="Drive Card" src="docs/drive_card.png" alt="Drive Card">
-<img title="ID Card" src="docs/id_card.png" alt="ID Card">
 <img title="Weapon Card" src="docs/weapon_card.png" alt="Weapon Card">
 
 
