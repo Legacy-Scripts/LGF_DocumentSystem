@@ -27,7 +27,6 @@ The LGF Document System is a custom document management system designed for Five
 - `QBOX`
 - `LegacyCore`
 
----
 
 ## Installation
 
