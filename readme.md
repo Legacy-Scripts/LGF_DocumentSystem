@@ -200,11 +200,11 @@ local keybind = lib.addKeybind({
         local isOpened = exports.LGF_DocumentSystem:GetStateDocumentUI()
         if isOpened then
         -- If is opened close the document
-            exports["LGF_DocumentSystem"]:OpenDocument(false, {})
+            exports.LGF_DocumentSystem:OpenDocument(false, {})
         else
         -- Retrieve the mugshot whit  MugShotBase64 and use it
             local Mugshot = exports["MugShotBase64"]:GetMugShotBase64(cache.ped, true)
-            exports["LGF_DocumentSystem"]:OpenDocument(true, {
+            exports.LGF_DocumentSystem:OpenDocument(true, {
                 Name = "Entino",
                 Surname = "Calogero",
                 Sex = "Male",
