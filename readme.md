@@ -89,7 +89,7 @@ Ensure Language Files are Present: Make sure you have the necessary localization
 setr LGF_DocumentSystem:GetLocales "it" --(default "en")
 ```
 
-## Exports
+## Exports (server)
 
 ### Get All Cards
 
@@ -144,3 +144,25 @@ end)
 
 ```
 
+
+## Exports (client)
+
+### Has Document of Type
+
+- Check the player inventory to see if she already has that `type of license`.
+
+```lua
+---@param docType string
+---@return boolean 
+exports.LGF_DocumentSystem:HasDocumentOfType(docType)
+```
+
+### Get State Ui 
+
+- Check the `state` of the UI, return true if is opened otherwise false.
+
+```lua
+---@param docType string
+---@return boolean 
+exports.LGF_DocumentSystem:GetStateDocumentUI(docType)
+```
