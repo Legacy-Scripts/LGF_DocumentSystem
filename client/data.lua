@@ -4,16 +4,7 @@ BRIDGE = GetFolder:getFrameworkObject(false)
 
 exports('manageDocument', function(data, slot)
     exports.ox_inventory:useItem(data, function(itemData)
-        if exports["LGF_DocumentSystem"]:GetStateDocumentUI() then
-            print("UI is Already Opened")
-            return
-        end
-
-
-        if not itemData then
-            print("No data found for item:", data)
-            return
-        end
+        if exports["LGF_DocumentSystem"]:GetStateDocumentUI() then print("UI is Already Opened") return end
 
         local playerData = {
             Name = itemData.metadata.PlayerName,
@@ -30,10 +21,7 @@ exports('manageDocument', function(data, slot)
         local playerCoords = cache.coords
         local nearbyPlayers = lib.getNearbyPlayers(playerCoords, 5.0, false)
 
-        if #nearbyPlayers == 0 then
-            UI.OpenToggleDocs("openDocument", true, playerData)
-            return
-        end
+        if #nearbyPlayers == 0 then  UI.OpenToggleDocs("openDocument", true, playerData) return   end
 
         local options = { { label = (" Name %s | ID %s"):format(GetPlayerName(cache.playerId), cache.serverId), value = "me", } }
 
@@ -56,7 +44,7 @@ exports('manageDocument', function(data, slot)
             }
         })
 
-        if not input or #input[1] == 0 then return end
+        if not input then return end
 
         for _, playerId in ipairs(input[1]) do
             if playerId == "me" then
@@ -81,23 +69,21 @@ end)
 
 
 
-function showDocumentOptions()
+local function showDocumentOptions()
     lib.registerContext({
         id = 'create_document',
-        title = 'Create New Document',
+        title = 'Document Options',
         options = {
             {
                 title = 'Create New Document',
-                description = 'This button is disabled',
-                icon = 'hand',
+                description = 'Create a new document for a nearby player.',
+                icon = 'plus',
                 disabled = false,
-                onSelect = function()
-                    createNewDocument()
-                end
+                onSelect = createNewDocument
             },
         }
     })
-    lib.showContext("create_document")
+    lib.showContext('create_document')
 end
 
 local function InputState(documentOptions, playerOptions)
@@ -152,6 +138,7 @@ function createNewDocument()
             })
         end
     end
+
     InputState(documentOptions, playerOptions)
 end
 
