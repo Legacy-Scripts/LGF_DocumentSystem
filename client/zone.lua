@@ -43,6 +43,8 @@ local function getDistanceBetweenCoords(coords1, coords2)
     return math.sqrt((coords1.x - coords2.x) ^ 2 + (coords1.y - coords2.y) ^ 2 + (coords1.z - coords2.z) ^ 2)
 end
 
+
+
 function DocumentZone:spawnPed()
     lib.requestModel(self.pedModel)
 
@@ -50,7 +52,8 @@ function DocumentZone:spawnPed()
         return HasModelLoaded(self.pedModel)
     end)
 
-    self.ped = CreatePed(0, self.pedModel, self.openCoords.x, self.openCoords.y, self.openCoords.z, self.openCoords.w, false, true)
+    self.ped = CreatePed(0, self.pedModel, self.openCoords.x, self.openCoords.y, self.openCoords.z, self.openCoords.w,
+        false, true)
 
     SetTimeout(700, function()
         SetModelAsNoLongerNeeded(self.pedModel)
@@ -63,6 +66,9 @@ function DocumentZone:spawnPed()
             {
                 icon = 'fa-solid fa-id-card-clip',
                 label = Lang:translate("request_document_label"),
+                canInteract = function()
+                    return not Config.DeathCheck()
+                end,
                 onSelect = function(data)
                     local PlayerJob = BRIDGE.GetPlayerJob()
                     local PlayerJoBGrade = BRIDGE.GetPlayerJobGrade()
@@ -148,7 +154,6 @@ function DocumentZone:RegisterContext()
                 icon = 'fa-solid fa-id-card-clip',
                 description = descriptionText,
                 onSelect = function()
-                    print(self.typeDocument)
                     DocumentZone:StartPlayerCreateDocs(self.typeDocument)
                 end
             }

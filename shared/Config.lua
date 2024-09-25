@@ -2,6 +2,8 @@ Config              = {}
 Config.DebugEnabled = true
 Config.Locales      = GetConvar("LGF_DocumentSystem:GetLocales", "en")
 
+Lang:loadLocales()
+
 
 
 -- [[ICON IS IMPORTED IN web/Components/Icon.tsx]]
@@ -78,4 +80,15 @@ Config.GiveCommand = {
 }
 
 
-return Lang:loadLocales()
+Config.DeathCheck = function()
+    local isDead = false
+    local RESOURCESTATE = GetResourceState("ars_ambulancejob")
+
+    if RESOURCESTATE:find("start") then
+        isDead = exports.ars_ambulancejob:isDead()
+    else
+        isDead = IsEntityDead(cache.ped)
+    end
+
+    return isDead
+end
