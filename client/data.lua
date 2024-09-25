@@ -87,12 +87,6 @@ function showDocumentOptions()
         title = 'Create New Document',
         options = {
             {
-                title = 'Wiev Document',
-                description = 'This button is disabled',
-                icon = 'hand',
-                disabled = false
-            },
-            {
                 title = 'Create New Document',
                 description = 'This button is disabled',
                 icon = 'hand',
