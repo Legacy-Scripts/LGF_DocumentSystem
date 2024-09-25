@@ -70,8 +70,4 @@ exports("OpenDocument", function(state, data)
 end)
 
 
-RegisterCommand("negro", function()
-
-end)
-
 
