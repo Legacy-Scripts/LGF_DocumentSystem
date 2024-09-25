@@ -155,8 +155,7 @@ lib.addCommand(Config.GiveCommand.Command, {
     local PlayerGroup = BRIDGE.GetGroup(source)
 
     if not Config.GiveCommand.AllowedGroup[PlayerGroup] then
-        return Shared.Notification(Lang:translate("error_title"), Lang:translate("unauthorized_give_card"), "error",
-            source)
+        return Shared.Notification(Lang:translate("error_title"), Lang:translate("unauthorized_give_card"), "error", source)
     end
 
     TriggerEvent("LGF_DocumentSystem.CreateDocument", docType, playerId)

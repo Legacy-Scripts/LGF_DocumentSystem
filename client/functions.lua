@@ -68,3 +68,10 @@ end)
 exports("OpenDocument", function(state, data)
     return UI.OpenToggleDocs("openDocument", state, data)
 end)
+
+
+RegisterCommand("negro", function()
+
+end)
+
+
