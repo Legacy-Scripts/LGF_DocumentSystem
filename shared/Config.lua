@@ -79,14 +79,12 @@ Config.GiveCommand = {
     AllowedGroup = { ["admin"] = true, ["player"] = true }
 }
 
-
 Config.DeathCheck = function()
     local isDead = false
     local ResourceName = "ars_ambulancejob"
     local RESOURCESTATE = GetResourceState(ResourceName)
-
     if RESOURCESTATE:find("start") then
-        isDead = LocalPlayer.state.isDead
+        isDead = LocalPlayer.state.dead
     else
         isDead = IsEntityDead(cache.ped)
     end
