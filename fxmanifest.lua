@@ -6,7 +6,9 @@ author "ENT510"
 description "Document management system based on item metadata."
 
 shared_scripts {
-  'shared/*.lua',
+  'shared/Shared.lua',
+  'shared/Lang.lua',
+  'shared/Config.lua',
   '@ox_lib/init.lua',
   "framework/GetFramework.lua",
 }

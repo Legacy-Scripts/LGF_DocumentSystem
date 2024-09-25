@@ -4,7 +4,10 @@ BRIDGE = GetFolder:getFrameworkObject(false)
 
 exports('manageDocument', function(data, slot)
     exports.ox_inventory:useItem(data, function(itemData)
-        if exports["LGF_DocumentSystem"]:GetStateDocumentUI() then print("UI is Already Opened") return end
+        if exports["LGF_DocumentSystem"]:GetStateDocumentUI() then
+            print(Lang:translate("ui_already_opened")) 
+            return
+        end
 
         local playerData = {
             Name = itemData.metadata.PlayerName,
@@ -21,26 +24,30 @@ exports('manageDocument', function(data, slot)
         local playerCoords = cache.coords
         local nearbyPlayers = lib.getNearbyPlayers(playerCoords, 5.0, false)
 
-        if #nearbyPlayers == 0 then  UI.OpenToggleDocs("openDocument", true, playerData) return   end
+        if #nearbyPlayers == 0 then
+            UI.OpenToggleDocs("openDocument", true, playerData)
+            return
+        end
 
-        local options = { { label = (" Name %s | ID %s"):format(GetPlayerName(cache.playerId), cache.serverId), value = "me", } }
+        local options = { { label = Lang:translate("option_me", GetPlayerName(cache.playerId), cache.serverId), value = "me" } }
 
         for _, nearbyPlayer in ipairs(nearbyPlayers) do
             local PlayerID = tostring(GetPlayerServerId(nearbyPlayer.id))
 
             table.insert(options, {
-                label = (" Name %s | ID %s"):format(GetPlayerName(nearbyPlayer.id), PlayerID),
+                label = Lang:translate("option_nearby_player", GetPlayerName(nearbyPlayer.id), PlayerID),
                 value = PlayerID,
             })
         end
 
-        local input = lib.inputDialog('Select Players', {
+
+        local input = lib.inputDialog(Lang:translate("select_players_title"), {
             {
                 type = 'multi-select',
-                label = 'Nearby Players',
+                label = Lang:translate("nearby_players_label"),
                 options = options,
                 required = false,
-                description = 'Select the players to you want to open the documents.'
+                description = Lang:translate("nearby_players_description"),
             }
         })
 
@@ -54,10 +61,12 @@ exports('manageDocument', function(data, slot)
             end
         end
     end)
+
     SetTimeout(5000, function()
         UI.OpenToggleDocs("openDocument", false, {})
     end)
 end)
+
 
 RegisterNetEvent("LGF_DocumentSystem.OpenDocsForNearby.response", function(data)
     assert(data and type(data) == "table", "Data is either nil or not a table")
@@ -68,15 +77,14 @@ RegisterNetEvent("LGF_DocumentSystem.OpenDocsForNearby.response", function(data)
 end)
 
 
-
 local function showDocumentOptions()
     lib.registerContext({
         id = 'create_document',
-        title = 'Document Options',
+        title = Lang:translate("document_options_title"),
         options = {
             {
-                title = 'Create New Document',
-                description = 'Create a new document for a nearby player.',
+                title = Lang:translate("create_new_document_title"),
+                description = Lang:translate("create_new_document_description"),
                 icon = 'plus',
                 disabled = false,
                 onSelect = createNewDocument
@@ -87,21 +95,21 @@ local function showDocumentOptions()
 end
 
 local function InputState(documentOptions, playerOptions)
-    local input = lib.inputDialog('Dialog title', {
+    local input = lib.inputDialog(Lang:translate("dialog_title"), {
         {
             type = 'select',
-            label = 'Document Type',
+            label = Lang:translate("document_type_label"),
             options = documentOptions,
             required = true,
-            description = 'Select the type of document.',
+            description = Lang:translate("document_type_description"),
             icon = 'file-alt'
         },
         {
             type = 'select',
-            label = 'Select Nearby Player',
+            label = Lang:translate("select_nearby_player_label"),
             options = playerOptions,
             required = true,
-            description = 'Choose a player for the document.',
+            description = Lang:translate("select_nearby_player_description"),
             icon = 'users'
         },
     })
@@ -112,15 +120,14 @@ local function InputState(documentOptions, playerOptions)
 end
 
 function createNewDocument()
-    local nearbyPlayers = lib.getNearbyPlayers(GetEntityCoords(PlayerPedId()), 5.0, true)
+    local nearbyPlayers = lib.getNearbyPlayers(GetEntityCoords(cache.ped), 5.0, true)
     local playerOptions = {}
     local PlayerJob = BRIDGE.GetPlayerJob()
-
 
     for _, nearbyPlayer in ipairs(nearbyPlayers) do
         local playerId = GetPlayerServerId(nearbyPlayer.id)
         table.insert(playerOptions, {
-            label = ("Name: %s | ID: %s"):format(GetPlayerName(nearbyPlayer.id), playerId),
+            label = Lang:translate("option_nearby_player"):format(GetPlayerName(nearbyPlayer.id), playerId),
             value = playerId
         })
     end
@@ -129,7 +136,6 @@ function createNewDocument()
     for i = 1, #Config.AvailableDocuments do
         local document = Config.AvailableDocuments[i]
 
-        print(PlayerJob)
         if not document.job or (type(document.job) == "table" and table.includes(document.job, PlayerJob)) then
             table.insert(documentOptions, {
                 label = document.title,
@@ -141,6 +147,7 @@ function createNewDocument()
 
     InputState(documentOptions, playerOptions)
 end
+
 
 function table.includes(table, value)
     for _, v in ipairs(table) do

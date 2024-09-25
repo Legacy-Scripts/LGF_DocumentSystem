@@ -1,5 +1,7 @@
 Config              = {}
 Config.DebugEnabled = true
+Config.Locales      = GetConvar("LGF_DocumentSystem:GetLocales", "en")
+
 
 
 -- [[ICON IS IMPORTED IN web/Components/Icon.tsx]]
@@ -66,3 +68,14 @@ Config.CommandMenu = {
         ["ambulance"] = true
     }
 }
+
+Config.GiveCommand = {
+    Command = "givecard",
+    AllowedGroup = {
+        ["admin"] = true,
+        ["player"] = false
+    }
+}
+
+
+return Lang:loadLocales()

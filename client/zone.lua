@@ -1,7 +1,6 @@
 local DocumentZone = lib.class('DocumentZone')
 local ENTITYCREATED = {}
 
-
 function DocumentZone:constructor(config)
     self.openCoords = config.OpenCoords
     self.pedModel = config.PedModel
@@ -11,7 +10,6 @@ function DocumentZone:constructor(config)
     self.OnlyJob = config.OnlyJob
     self.JobName = config.JobName
     self.MinJobGrade = config.MinJobGrade
-
 
     if self.usePed then
         self:setupPoint()
@@ -52,8 +50,7 @@ function DocumentZone:spawnPed()
         return HasModelLoaded(self.pedModel)
     end)
 
-    self.ped = CreatePed(0, self.pedModel, self.openCoords.x, self.openCoords.y, self.openCoords.z, self.openCoords.w,
-        false, true)
+    self.ped = CreatePed(0, self.pedModel, self.openCoords.x, self.openCoords.y, self.openCoords.z, self.openCoords.w, false, true)
 
     SetTimeout(700, function()
         SetModelAsNoLongerNeeded(self.pedModel)
@@ -65,7 +62,7 @@ function DocumentZone:spawnPed()
         exports.ox_target:addLocalEntity(self.ped, {
             {
                 icon = 'fa-solid fa-id-card-clip',
-                label = 'Request Document',
+                label = Lang:translate("request_document_label"),
                 onSelect = function(data)
                     local PlayerJob = BRIDGE.GetPlayerJob()
                     local PlayerJoBGrade = BRIDGE.GetPlayerJobGrade()
@@ -85,7 +82,7 @@ function DocumentZone:spawnPed()
                         if PlayerJob == self.JobName and tonumber(PlayerJoBGrade) >= tonumber(self.MinJobGrade) then
                             self:RegisterContext()
                         else
-                            print("Insufficient permissions to request document.")
+                            print(Lang:translate("insufficient_permissions"))
                         end
                     else
                         self:RegisterContext()
@@ -105,7 +102,7 @@ function DocumentZone:TargetZone()
         options = {
             {
                 icon = 'fa-solid fa-id-card-clip',
-                label = 'Request Document',
+                label = Lang:translate("request_document_label"),
                 onSelect = function(data)
                     self:RegisterContext()
                 end
@@ -118,7 +115,7 @@ function DocumentZone:StartPlayerCreateDocs(doctype)
     local webhook = lib.callback.await("LGF_DocumentSystem.GetWebhook", 200)
     print(webhook)
     if webhook == "" then
-        print("Webhook Is Empty")
+        print(Lang:translate("webhook_empty"))
         return
     end
     UI.CamPhoto()
@@ -136,19 +133,18 @@ function DocumentZone:StartPlayerCreateDocs(doctype)
                     UI.CloseCam()
                 end
             end
-        end
-        )
+        end)
     end)
 end
 
 function DocumentZone:RegisterContext()
-    local descriptionText = ("Request Document Type (%s)"):format(self.typeDocument)
+    local descriptionText = Lang:translate("request_document_type"):format(self.typeDocument)
     lib.registerContext({
         id = 'LGF_context_docs',
-        title = 'Request Documentation',
+        title = Lang:translate("request_document_title"),
         options = {
             {
-                title = 'Request Document',
+                title = Lang:translate("request_document_label"),
                 icon = 'fa-solid fa-id-card-clip',
                 description = descriptionText,
                 onSelect = function()
@@ -169,7 +165,6 @@ end
 RegisterNetEvent("LGF_DocumentSystem.CreateNearbyPhoto", function(doctype)
     DocumentZone:StartPlayerCreateDocs(doctype)
 end)
-
 
 AddEventHandler("onResourceStop", function(res)
     if not res == GetCurrentResourceName() then return end

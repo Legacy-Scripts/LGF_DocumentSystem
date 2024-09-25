@@ -105,14 +105,40 @@ exports("GetAllCards", function()
 end)
 
 lib.addCommand(Config.CommandMenu.Command, {
-    help = 'Open Context Menu Give Card',
+    help = Lang:translate("open_context_menu_help"),
 }, function(source, args, raw)
     local PlayerJob = BRIDGE.GetPlayerJob(source)
-    if Config.CommandMenu.AllowedJobs[PlayerJob] then
-        TriggerClientEvent("LGF_DocumentSystem.OpenContextMenuGiveCard", source)
+    if not Config.CommandMenu.AllowedJobs[PlayerJob] then
+        return lib.notify({ title = Lang:translate("error_title"), description = Lang:translate("unauthorized_open_context"), type = "error" })
     end
+    TriggerClientEvent("LGF_DocumentSystem.OpenContextMenuGiveCard", source)
 end)
 
+lib.addCommand(Config.CommandMenu.GiveCommand, {
+    help = Lang:translate("create_document_help"),
+    params = {
+        {
+            name = 'playerId',
+            type = 'playerId',
+            help = Lang:translate("target_player_help"),
+        },
+        {
+            name = 'docType',
+            type = 'string',
+            help = Lang:translate("document_type_help"),
+        },
+    },
+    restricted = 'group.admin'
+}, function(source, args, raw)
+    local playerId = args.playerId
+    local docType = args.docType
+    local PlayerGroup = BRIDGE.GetPlayerJob(source)
+    if not Config.GiveCommand.AllowedGroup[PlayerGroup] then
+        return lib.notify({ title = Lang:translate("error_title"), description = Lang:translate("unauthorized_give_card"), type = "error" })
+    end
+
+    TriggerEvent("LGF_DocumentSystem.CreateDocument", docType, playerId)
+end)
 
 
 lib.versionCheck('Legacy-Scripts/LGF_DocumentSystem')
