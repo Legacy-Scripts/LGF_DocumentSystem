@@ -8,7 +8,6 @@ function Shared.DebugData(...)
 end
 
 function Shared.Notification(title, message, type, source)
-    print(IsDuplicityVersion())
     if not IsDuplicityVersion() then
         lib.notify({
             title = title,
