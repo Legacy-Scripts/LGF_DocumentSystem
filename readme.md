@@ -85,7 +85,7 @@ The LGF Document System is a custom document management system designed for Five
    Ensure Language Files are Present: Make sure you have the necessary localization files. You should have a file named %s.json in the locales directory of your LGF_DocumentSystem.
 
 ```cfg
-setr LGF_DocumentSystem:GetLocales "it" --(default "en")
+setr LGF_DocumentSystem:GetLocales "it"
 ```
 
 ## Exports (server)
