@@ -19,7 +19,7 @@ The LGF Document System is a custom document management system designed for Five
 ## Dependency
 
 - `ox_inventory`
-- `screenshot-basic`
+- `screenshot-basic` or - `MugShotBase64`
 
 ## Framework Supported
 
