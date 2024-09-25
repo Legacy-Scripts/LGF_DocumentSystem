@@ -48,4 +48,8 @@ function BRIDGE.GetPlayerJob(src)
     end
 end
 
+function BRIDGE.GetGroup(src)
+    return Legacy.DATA:GetPlayerGroup(src)
+end
+
 return BRIDGE

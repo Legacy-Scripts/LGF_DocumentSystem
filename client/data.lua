@@ -1,11 +1,36 @@
-local GetFolder = require('framework.GetFramework'):new()
-BRIDGE = GetFolder:getFrameworkObject(false)
+local GetFolder    = require('framework.GetFramework'):new()
+BRIDGE             = GetFolder:getFrameworkObject(false)
+local SHOWCARDTIME = Config.AutoCloseTime
 
+
+function StartAnim(dict, anim, prop)
+    lib.requestAnimDict(dict)
+
+    while not HasAnimDictLoaded(dict) do
+        RequestAnimDict(dict)
+        Wait(10)
+    end
+
+    local EntityCoords = cache.coords
+    local Entity = cache.ped
+
+    CARDPROP = CreateObject(joaat(prop), EntityCoords.x, EntityCoords.y, EntityCoords.z + 0.2, true, true, true)
+    SetEntityCollision(CARDPROP, true, true)
+    TaskPlayAnim(cache.ped, dict, anim, 3.0, -1, -1, 50, -1, false, false, false)
+    AttachEntityToEntity(CARDPROP, Entity, GetPedBoneIndex(Entity, 57005), 0.1000, 0.0200, -0.0300, -90.000, 170.000, 78.999, true, true, false, true, 1, true)
+    SetModelAsNoLongerNeeded(CARDPROP)
+
+    SetTimeout(SHOWCARDTIME, function()
+        ClearPedTasks(Entity)
+        DeleteEntity(CARDPROP)
+        RemoveAnimDict(dict)
+    end)
+end
 
 exports('manageDocument', function(data, slot)
     exports.ox_inventory:useItem(data, function(itemData)
         if exports["LGF_DocumentSystem"]:GetStateDocumentUI() then
-            print(Lang:translate("ui_already_opened")) 
+            print(Lang:translate("ui_already_opened"))
             return
         end
 
@@ -26,6 +51,7 @@ exports('manageDocument', function(data, slot)
 
         if #nearbyPlayers == 0 then
             UI.OpenToggleDocs("openDocument", true, playerData)
+            StartAnim('paper_1_rcm_alt1-9', 'player_one_dual-9', "prop_franklin_dl")
             return
         end
 
@@ -33,7 +59,6 @@ exports('manageDocument', function(data, slot)
 
         for _, nearbyPlayer in ipairs(nearbyPlayers) do
             local PlayerID = tostring(GetPlayerServerId(nearbyPlayer.id))
-
             table.insert(options, {
                 label = Lang:translate("option_nearby_player", GetPlayerName(nearbyPlayer.id), PlayerID),
                 value = PlayerID,
@@ -56,24 +81,30 @@ exports('manageDocument', function(data, slot)
         for _, playerId in ipairs(input[1]) do
             if playerId == "me" then
                 UI.OpenToggleDocs("openDocument", true, playerData)
+                StartAnim('paper_1_rcm_alt1-9', 'player_one_dual-9', "prop_franklin_dl")
             else
                 TriggerServerEvent("LGF_DocumentSystem.OpenDocsForNearby", playerData, tonumber(playerId))
             end
         end
     end)
 
-    SetTimeout(5000, function()
-        UI.OpenToggleDocs("openDocument", false, {})
-    end)
+
+    if Config.EnableAutoClose then
+        SetTimeout(SHOWCARDTIME, function()
+            UI.OpenToggleDocs("openDocument", false, {})
+        end)
+    end
 end)
 
 
 RegisterNetEvent("LGF_DocumentSystem.OpenDocsForNearby.response", function(data)
     assert(data and type(data) == "table", "Data is either nil or not a table")
     UI.OpenToggleDocs("openDocument", true, data)
-    SetTimeout(5000, function()
-        UI.OpenToggleDocs("openDocument", false, {})
-    end)
+    if Config.EnableAutoClose then
+        SetTimeout(SHOWCARDTIME, function()
+            UI.OpenToggleDocs("openDocument", false, {})
+        end)
+    end
 end)
 
 
@@ -127,7 +158,7 @@ function createNewDocument()
     for _, nearbyPlayer in ipairs(nearbyPlayers) do
         local playerId = GetPlayerServerId(nearbyPlayer.id)
         table.insert(playerOptions, {
-            label = Lang:translate("option_nearby_player"):format(GetPlayerName(nearbyPlayer.id), playerId),
+            label = GetPlayerName(nearbyPlayer.id),
             value = playerId
         })
     end
@@ -147,7 +178,6 @@ function createNewDocument()
 
     InputState(documentOptions, playerOptions)
 end
-
 
 function table.includes(table, value)
     for _, v in ipairs(table) do

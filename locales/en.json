@@ -16,13 +16,17 @@
     "request_document_label": "Request Document",
     "insufficient_permissions": "Insufficient permissions to request document.",
     "webhook_empty": "Webhook Is Empty",
-    "request_document_type": "Request Document Type (%s)",
+    "request_document_type": "Request Document Type",
     "request_document_title": "Request Documentation",
     "open_context_menu_help": "Open Context Menu Give Card",
     "error_title": "Error",
+    "success_title": "Success",
     "unauthorized_open_context": "You are not authorized to open context cards",
     "create_document_help": "Creates a document for a specified player",
     "target_player_help": "Target player's server ID",
     "document_type_help": "Type of document to create (must match existing types)",
+    "has_already": "You already have a document of this type.",
+    "document_created" : "You have create a new document Correctly",
     "unauthorized_give_card": "You are not authorized to give cards"
 }
+

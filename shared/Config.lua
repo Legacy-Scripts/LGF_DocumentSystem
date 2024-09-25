@@ -1,6 +1,12 @@
-Config              = {}
-Config.DebugEnabled = true
-Config.Locales      = GetConvar("LGF_DocumentSystem:GetLocales", "en")
+Config                  = {}
+Config.DebugEnabled     = true
+Config.Locales          = GetConvar("LGF_DocumentSystem:GetLocales", "en")
+Config.ProviderPhoto    = (GetResourceState("screenshot-basic"):find("start") and "screenshot-basic" or "MugShotBase64")
+
+Config.EnableAutoClose  = true
+Config.AutoCloseTime    = 3700
+Config.KeyCloseDocument = "BACK"
+
 
 Lang:loadLocales()
 
@@ -40,7 +46,7 @@ Config.AvailableDocuments = {
 }
 
 Config.DocumentZone = {
-    zone1 = {
+    ["License ID"] = {
         UsePed       = true,
         OpenCoords   = vector4(-614.8059, -682.4809, 36.2871, 0.5474),
         PedModel     = "a_m_m_business_01",
@@ -65,27 +71,22 @@ Config.DocumentZone = {
 
 Config.CommandMenu = {
     Command = "documents",
-    AllowedJobs = {
-        ["police"] = true,
-        ["ambulance"] = true
-    }
+    AllowedJobs = { ["police"] = true, ["unemployed"] = true }
 }
 
 Config.GiveCommand = {
     Command = "givecard",
-    AllowedGroup = {
-        ["admin"] = true,
-        ["player"] = false
-    }
+    AllowedGroup = { ["admin"] = true, ["player"] = true }
 }
 
 
 Config.DeathCheck = function()
     local isDead = false
-    local RESOURCESTATE = GetResourceState("ars_ambulancejob")
+    local ResourceName = "ars_ambulancejob"
+    local RESOURCESTATE = GetResourceState(ResourceName)
 
     if RESOURCESTATE:find("start") then
-        isDead = exports.ars_ambulancejob:isDead()
+        isDead = LocalPlayer.state.isDead
     else
         isDead = IsEntityDead(cache.ped)
     end

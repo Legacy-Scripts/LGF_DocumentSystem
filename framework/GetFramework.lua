@@ -1,3 +1,8 @@
+if not lib then
+    assert("Missing Ox Lib")
+    return
+end
+
 local FRAMEWORK = {}
 local CACHED_FRAMEWORKS = {}
 
@@ -53,5 +58,8 @@ function FRAMEWORK:getFrameworkObject(IS_SERVER)
     Shared.DebugData('No framework found.')
     return nil
 end
+
+
+
 
 return FRAMEWORK

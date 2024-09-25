@@ -35,4 +35,19 @@ function BRIDGE.GetDob(src)
     end
 end
 
+local function isPlayerAllowed(src)
+    for k, v in pairs(Config.GiveCommand.AllowedGroup) do
+        if v == true then
+            if IsPlayerAceAllowed(src, k) then
+                return k
+            end
+        end
+    end
+    return "user"
+end
+
+function BRIDGE.GetGroup(src)
+    return isPlayerAllowed(src)
+end
+
 return BRIDGE

@@ -21,7 +21,7 @@ function BRIDGE.GetPlayerName(src)
 end
 
 function BRIDGE.GetSex(src)
-    local Sex = BRIDGE.GetPlayerData(src).sex
+    local Sex = BRIDGE.GetPlayerData(src).variables.sex
     if Sex then
         return Sex
     end
@@ -29,10 +29,23 @@ end
 
 function BRIDGE.GetDob(src)
     local PlayerData = BRIDGE.GetPlayerData(src)
-    local Dob = PlayerData?.dob
+    local Dob = PlayerData?.variables.dateofbirth
     if Dob then
         return Dob
     end
+end
+
+function BRIDGE.GetPlayerJob(src)
+    local PlayerData = BRIDGE.GetPlayerData(src)
+    local Job = PlayerData?.job.name
+    if Job then
+        return Job
+    end
+end
+
+function BRIDGE.GetGroup(src)
+    local xPlayer = BRIDGE.GetPlayerData(src)
+    return xPlayer.getGroup()
 end
 
 return BRIDGE

@@ -2,8 +2,8 @@ Lang = {}
 
 
 function Lang:loadLocales()
-    local localeFile = string.format('locales/%s.json', Config.Locales) 
-    local fileContent = LoadResourceFile(cache.resource, localeFile) 
+    local localeFile = string.format('locales/%s.json', Config.Locales)
+    local fileContent = LoadResourceFile("LGF_DocumentSystem", localeFile)
 
     if fileContent then
         local success, data = pcall(json.decode, fileContent)
