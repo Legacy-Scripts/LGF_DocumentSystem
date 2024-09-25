@@ -82,6 +82,14 @@ The LGF Document System is a custom document management system designed for Five
 3. **Configure Documents and Zone in `Config.lua`**
    Add your document types in the Config.lua file.
 
+
+
+4. **Add your Language  `server.cfg`**
+Ensure Language Files are Present: Make sure you have the necessary localization files. You should have a file named %s.json in the locales directory of your LGF_DocumentSystem.
+
+```cfg
+setr LGF_DocumentSystem:GetLocales "it" --(default "en")
+```
 ## Exports
 
 ### Get All Cards
