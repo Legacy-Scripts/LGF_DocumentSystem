@@ -19,14 +19,13 @@ The LGF Document System is a custom document management system designed for Five
 ## Dependency
 
 - `ox_inventory`
-- `screenshot-basic` or  `MugShotBase64`
+- `screenshot-basic` or `MugShotBase64`
 
 ## Framework Supported
 
 - `ESX`
 - `QBOX`
 - `LegacyCore`
-
 
 ## Installation
 
@@ -82,9 +81,9 @@ The LGF Document System is a custom document management system designed for Five
 3. **Configure Documents and Zone in `Config.lua`**
    Add your document types in the Config.lua file.
 
+4. **Add your Language `server.cfg`**
+   Ensure Language Files are Present: Make sure you have the necessary localization files. You should have a file named %s.json in the locales directory of your LGF_DocumentSystem.
 
-4. **Add your Language  `server.cfg`**
-Ensure Language Files are Present: Make sure you have the necessary localization files. You should have a file named %s.json in the locales directory of your LGF_DocumentSystem.
 ```cfg
 setr LGF_DocumentSystem:GetLocales "it" --(default "en")
 ```
@@ -111,7 +110,8 @@ exports.LGF_DocumentSystem:GetAllCards()
 ---@return boolean | string
 exports.LGF_DocumentSystem:CreateDocument(docType, playerId)
 ```
-#### Example Usage 
+
+#### Example Usage
 
 ```lua
 lib.addCommand('createdocument', {
@@ -144,7 +144,6 @@ end)
 
 ```
 
-
 ## Exports (client)
 
 ### Has Document of Type
@@ -153,16 +152,70 @@ end)
 
 ```lua
 ---@param docType string
----@return boolean 
+---@return boolean
 exports.LGF_DocumentSystem:HasDocumentOfType(docType)
 ```
 
-### Get State Ui 
+### Get State Ui
 
 - Check the `state` of the UI, return true if is opened otherwise false.
 
 ```lua
----@param docType string
----@return boolean 
-exports.LGF_DocumentSystem:GetStateDocumentUI(docType)
+---@return boolean
+exports.LGF_DocumentSystem:GetStateDocumentUI()
+```
+
+### Open Document
+
+- Open documents by passing `parameters as you like`, Useful for creating fake documents etc.
+- Note, You have to create the logic `yourself` for this to be able to show the documents to others etc
+
+```lua
+---@param state boolean
+---@param data string[]
+exports.LGF_DocumentSystem:OpenDocument(state,data)
+```
+
+| Key        | Type   | Description                                                                |
+| ---------- | ------ | -------------------------------------------------------------------------- |
+| Name       | string | The first name of the individual.                                          |
+| Surname    | string | The last name of the individual.                                           |
+| Sex        | string | The gender of the individual (e.g., "Male", "Female").                     |
+| Dob        | string | The date of birth in the format "DD/MM/YYYY".                              |
+| Avatar     | string | The Base64 or a url image representation of the individual's avatar image. |
+| IdCard     | string | A unique identifier for the document (e.g., "#A0A0A0").                    |
+| Expiration | string | The expiration date of the document in the format "DD/MM/YYYY".            |
+| TypeDocs   | string | The type of document (e.g., "license_id"), require matching whit existing. |
+| Released   | string | The release date of the document in the format "DD/MM/YYYY HH:MM".         |
+
+#### Example Usage
+
+```lua
+local keybind = lib.addKeybind({
+    name = 'dwadwada',
+    description = 'press k To Toggle Document',
+    defaultKey = 'K',
+    onPressed = function(self)
+    -- Check if the Document is already opened
+        local isOpened = exports.LGF_DocumentSystem:GetStateDocumentUI()
+        if isOpened then
+        -- If is opened close the document
+            exports["LGF_DocumentSystem"]:OpenDocument(false, {})
+        else
+        -- Retrieve the mugshot whit  MugShotBase64 and use it
+            local Mugshot = exports["MugShotBase64"]:GetMugShotBase64(cache.ped, true)
+            exports["LGF_DocumentSystem"]:OpenDocument(true, {
+                Name = "Entino",
+                Surname = "Calogero",
+                Sex = "Male",
+                Dob = "02/12/1998",
+                Avatar = Mugshot,
+                IdCard = ("#%s"):format(lib.string.random("A0A0A0", 6)),
+                Expiration = "02/01/2026",
+                TypeDocs = "license_id",
+                Released = "25/09/2021 21:06",
+            })
+        end
+    end,
+})
 ```
