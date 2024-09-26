@@ -1,5 +1,7 @@
 local DocumentZone = lib.class('DocumentZone')
 local ENTITYCREATED = {}
+local BLIPS = {}
+
 
 function DocumentZone:constructor(config, zoneName)
     self.openCoords = config.OpenCoords
@@ -200,20 +202,55 @@ RegisterNetEvent("LGF_DocumentSystem.CreateNearbyPhoto", function(doctype)
     DocumentZone:StartPlayerCreateDocs(doctype)
 end)
 
+function CreateBlip(coords, data)
+    local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
+    SetBlipSprite(blip, data.Sprite or 1)
+    SetBlipDisplay(blip, data.Display or 4)
+    SetBlipScale(blip, data.Scale or 0.8)
+    SetBlipColour(blip, data.Color or 3)
+    SetBlipAsShortRange(blip, data.ShortRange ~= false)
+
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString(data.Name or "Blip")
+    EndTextCommandSetBlipName(blip)
+
+    return blip
+end
+
 AddEventHandler("onResourceStop", function(res)
-    if not res == GetCurrentResourceName() then return end
-    for _, entity in ipairs(ENTITYCREATED) do
-        if DoesEntityExist(entity) then
-            DeleteEntity(entity)
-            Shared.DebugData("Entity Deleted", entity)
+    if res == GetCurrentResourceName() then
+        for _, entity in ipairs(ENTITYCREATED) do
+            if DoesEntityExist(entity) then
+                DeleteEntity(entity)
+                Shared.DebugData("Entity Deleted", entity)
+            end
+        end
+
+
+        if DoesCamExist(UI.GetCam()) then
+            UI.CloseCam()
+        end
+
+        ENTITYCREATED = {}
+
+        if BLIPS then
+            for _, blip in ipairs(BLIPS) do
+                if DoesBlipExist(blip) then
+                    RemoveBlip(blip)
+                end
+            end
+            BLIPS = {}
         end
     end
-
-    if DoesCamExist(UI.GetCam()) then
-        UI.CloseCam()
-    end
-
-    ENTITYCREATED = {}
 end)
 
-
+AddEventHandler("onResourceStart", function(res)
+    if res == GetCurrentResourceName() then
+        for name, zoneConfig in pairs(Config.DocumentZone) do
+            if zoneConfig.Blip and zoneConfig.Blip.Enabled then
+                local blip = CreateBlip(zoneConfig.OpenCoords, zoneConfig.Blip)
+                if blip then table.insert(BLIPS, blip) end
+            end
+        end
+    end
+end)
