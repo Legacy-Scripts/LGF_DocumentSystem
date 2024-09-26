@@ -55,6 +55,14 @@ Config.DocumentZone = {
         OnlyJob      = false,
         JobName      = "police",
         MinJobGrade  = 2,
+        Blip         = {
+            Enabled    = true,
+            Sprite     = 280,
+            Scale      = 0.9,
+            Color      = 2,
+            Name       = "Boat License Center",
+            ShortRange = true
+        }
     },
     -- zone_name = {                       -- Identifier name of the zone
     --     UsePed       = true,            -- Boolean: if set to `true`, a ped (NPC) will be used in the zone otherwise only a sphere zone
@@ -65,6 +73,14 @@ Config.DocumentZone = {
     --     OnlyJob      = false,           -- Boolean: if set to `true`, only a specific job can interact with the zone
     --     JobName      = "job_name",      -- String: the name of the job that can interact (used only if OnlyJob = true)
     --     MinJobGrade  = 2,               -- Number: minimum job grade required to interact with the zone
+        --    Blip         = {
+        --     Enabled    = true,
+        --     Sprite     = 280,
+        --     Scale      = 0.9,
+        --     Color      = 2,
+        --     Name       = "Boat License Center",
+        --     ShortRange = true
+        -- }
     -- }
 }
 
