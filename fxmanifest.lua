@@ -1,6 +1,6 @@
 fx_version 'cerulean'
 game 'gta5'
-version '1.0.0'
+version '1.0.1'
 lua54 'yes'
 author "ENT510"
 description "Document management system based on item metadata."
