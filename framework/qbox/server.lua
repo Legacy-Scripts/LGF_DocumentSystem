@@ -46,6 +46,14 @@ local function isPlayerAllowed(src)
     return "user"
 end
 
+function BRIDGE.GetPlayerJob(src)
+    local PlayerData = BRIDGE.GetPlayerData(src)
+    local Job = PlayerData?.job.name
+    if Job then
+        return Job
+    end
+end
+
 function BRIDGE.GetGroup(src)
     return isPlayerAllowed(src)
 end
