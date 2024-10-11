@@ -42,9 +42,9 @@ end
 
 function BRIDGE.GetPlayerJob(src)
     local PlayerData = BRIDGE.GetPlayerData(src)
-    local Dob = PlayerData?.JobName
-    if Dob then
-        return Dob
+    local Job = PlayerData?.JobName
+    if Job then
+        return Job
     end
 end
 
