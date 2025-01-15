@@ -1,3 +1,7 @@
+![GitHub Downloads](https://img.shields.io/github/downloads/ENT510/LGF_DocumentSystem/total?logo=github)
+![GitHub Release](https://img.shields.io/github/v/release/ENT510/LGF_DocumentSystem?logo=github)
+
+
 # LGF Document System
 
 The LGF Document System is a custom document management system designed for FiveM. It allows players to manage, issue, and view various types of licenses, such as ID cards, driving licenses, weapon licenses, and boat licenses. This system integrates with `ox_inventory` and provides job-specific access to certain documents.
