@@ -15,6 +15,7 @@ local CONTEXT_PATHS = {
 local FRAMEWORKS = {
     ['es_extended'] = { folder = 'esx' },
     ['qb-core'] = { folder = 'qbox' },
+    ['ox_core'] = { folder = 'ox' },
     ['LEGACYCORE'] = { folder = 'legacy' },
     ['CUSTOM'] = { folder = 'custom' }
 }

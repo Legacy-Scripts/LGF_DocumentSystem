@@ -28,6 +28,7 @@ files {
   "framework/legacy/*.lua",
   "framework/esx/*.lua",
   "framework/qbox/*.lua",
+  "framework/ox/*.lua",
   'web/build/index.html',
   'web/build/**/*',
 }
