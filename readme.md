@@ -30,6 +30,7 @@ The LGF Document System is a custom document management system designed for Five
 - `ESX`
 - `QBOX`
 - `LegacyCore`
+- `ox_core`
 
 ## Installation
 
