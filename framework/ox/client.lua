@@ -13,7 +13,9 @@ end
 function BRIDGE.GetPlayerJobGrade()
     local OxPlayer = Ox.GetPlayer()
     if not OxPlayer then return end
-    local JobGrade = OxPlayer.getGroup(OxPlayer.get('activeGroup'))
+    local activeGroup = OxPlayer.get('activeGroup')
+    if not activeGroup then return end
+    local JobGrade = OxPlayer.getGroup(activeGroup)
     if JobGrade then return JobGrade end
 end
 

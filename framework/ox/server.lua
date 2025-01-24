@@ -26,17 +26,6 @@ function BRIDGE.GetDob(src)
     end
 end
 
-local function isPlayerAllowed(src)
-    for k, v in pairs(Config.GiveCommand.AllowedGroup) do
-        if v == true then
-            if IsPlayerAceAllowed(src, k) then
-                return k
-            end
-        end
-    end
-    return "user"
-end
-
 function BRIDGE.GetPlayerJob(src)
     local OxPlayer = Ox.GetPlayer(src)
     if not OxPlayer then return end
@@ -47,7 +36,10 @@ function BRIDGE.GetPlayerJob(src)
 end
 
 function BRIDGE.GetGroup(src)
-    return isPlayerAllowed(src)
+    local OxPlayer = Ox.GetPlayer(src)
+    if not OxPlayer then return end
+    local Group = OxPlayer.get('activeGroup')
+    if Group then return Group end
 end
 
 return BRIDGE
