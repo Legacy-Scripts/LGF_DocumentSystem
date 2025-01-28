@@ -118,7 +118,14 @@ RegisterNetEvent("LGF_DocumentSystem.CreateDocument", function(docType, playerId
 end)
 
 lib.callback.register("LGF_DocumentSystem.GetWebhook", function()
-    return ServerConfig.Webhook
+        if Config.UploadOption == "Fivemerr" then
+            return ServerConfig.API_KEY
+        elseif Config.UploadOption == "Fivemanage" then
+            return ServerConfig.API_KEY
+        else // Discord
+            return ServerConfig.API_KEY 
+        end
+    
 end)
 
 
