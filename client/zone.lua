@@ -134,7 +134,7 @@ function DocumentZone:StartPlayerCreateDocs(doctype)
         UI.CamPhoto()
 
         SetTimeout(2000, function()
-            if Config.UploadOption == "fivemanage" then
+            if Config.UploadOption == "Fivemanage" then
                 exports['screenshot-basic']:requestScreenshotUpload('https://api.fivemanage.com/api/image', 'file', {
                     headers = {
                         Authorization = API_KEY
@@ -145,7 +145,7 @@ function DocumentZone:StartPlayerCreateDocs(doctype)
                     TriggerServerEvent("LGF_DocumentSystem.ObtainNewDocument", link, doctype)
                 end)
 
-            elseif Config.UploadOption == "fivemerr" then
+            elseif Config.UploadOption == "Fivemerr" then
                 exports['screenshot-basic']:requestScreenshotUpload('https://api.fivemerr.com/v1/media/images', 'file', {
                     headers = {
                         Authorization = API_KEY
