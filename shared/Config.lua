@@ -7,6 +7,7 @@ Config.EnableAutoClose  = true
 Config.AutoCloseTime    = 3700
 Config.KeyCloseDocument = "BACK"
 
+Config.UploadOption = "Fivemerr" // Fivemerr or Fivemanage or Discord (It is not reliable method to use for image) better use other image upload methods fivemerr or fivemanage .. Change api key or hook in server 
 
 Lang:loadLocales()
 

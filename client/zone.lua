@@ -124,34 +124,59 @@ function DocumentZone:StartPlayerCreateDocs(doctype)
     if Config.ProviderPhoto == "MugShotBase64" then
         local mug = exports["MugShotBase64"]:GetMugShotBase64(cache.ped, true)
         TriggerServerEvent("LGF_DocumentSystem.ObtainNewDocument", mug, doctype)
-    elseif Config.ProviderPhoto == "screenshot-basic" then
-        local webhook = lib.callback.await("LGF_DocumentSystem.GetWebhook", 200)
-        if webhook == "" then
+
+    if Config.ProviderPhoto == "screenshot-basic" then
+        local API_KEY = lib.callback.await("LGF_DocumentSystem.GetWebhook", 200)
+        if API_KEY == "" then
             print(Lang:translate("webhook_empty"))
             return
         end
-
         UI.CamPhoto()
 
         SetTimeout(2000, function()
-            exports['screenshot-basic']:requestScreenshotUpload(webhook, 'files[]', function(res)
-                local resp = json.decode(res)
+            if Config.UploadOption == "Fivemanage" then
+                exports['screenshot-basic']:requestScreenshotUpload('https://api.fivemanage.com/api/image', 'file', {
+                    headers = {
+                        Authorization = API_KEY
+                    },
+                }, function(data)
+                    local resp = json.decode(data)
+                    local link = (resp and resp.url) or 'invalid_url'
+                    TriggerServerEvent("LGF_DocumentSystem.ObtainNewDocument", link, doctype)
+                end)
 
-                if resp and resp.attachments and resp.attachments[1] then
-                    local screen = resp.attachments[1].url
-                    TriggerServerEvent("LGF_DocumentSystem.ObtainNewDocument", screen, doctype)
-                    Wait(1000)
-                    UI.CloseCam()
-         
-                else
-                    if UI.GetCam() then
+            elseif Config.UploadOption == "Fivemerr" then
+                exports['screenshot-basic']:requestScreenshotUpload('https://api.fivemerr.com/v1/media/images', 'file', {
+                    headers = {
+                        Authorization = API_KEY
+                    },
+                    encoding = 'png'
+                }, function(data)
+                    local resp = json.decode(data)
+                    local link = (resp and resp.url) or 'invalid_url'
+                    TriggerServerEvent("LGF_DocumentSystem.ObtainNewDocument", link, doctype)
+                end)
+
+            elseif Config.UploadOption == "discord" then
+                exports['screenshot-basic']:requestScreenshotUpload(API_KEY, 'files[]', function(res)
+                    local resp = json.decode(res)
+
+                    if resp and resp.attachments and resp.attachments[1] then
+                        local screen = resp.attachments[1].url
+                        TriggerServerEvent("LGF_DocumentSystem.ObtainNewDocument", screen, doctype)
+                        Wait(1000)
                         UI.CloseCam()
+                    else
+                        if UI.GetCam() then
+                            UI.CloseCam()
+                        end
                     end
-                end
-            end)
+                end)
+            end
         end)
     end
 end
+
 
 function DocumentZone:HasDocumentOfType(typeDocument)
     local PlayerInventory = exports.ox_inventory:GetPlayerItems()
