@@ -124,7 +124,7 @@ function DocumentZone:StartPlayerCreateDocs(doctype)
     if Config.ProviderPhoto == "MugShotBase64" then
         local mug = exports["MugShotBase64"]:GetMugShotBase64(cache.ped, true)
         TriggerServerEvent("LGF_DocumentSystem.ObtainNewDocument", mug, doctype)
-
+    end
     if Config.ProviderPhoto == "screenshot-basic" then
         local API_KEY = lib.callback.await("LGF_DocumentSystem.GetWebhook", 200)
         if API_KEY == "" then
